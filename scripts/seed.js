@@ -71,9 +71,9 @@ const products = [
 
 const content = [
   // hero
-  { key: 'hero.eyebrow', group: 'hero', label: 'Hero eyebrow', type: 'text', value: 'Handcrafted Chocolate' },
-  { key: 'hero.title', group: 'hero', label: 'Hero title', type: 'text', value: 'Made to make every moment sweeter.' },
-  { key: 'hero.subtitle', group: 'hero', label: 'Hero subtitle', type: 'textarea', value: 'Handcrafted chocolates in small batches — rich, premium and packed fresh. Choose the perfect box for yourself or as a thoughtful gift.' },
+  { key: 'hero.eyebrow', group: 'hero', label: 'Hero eyebrow', type: 'text', value: 'Bruwon™' },
+  { key: 'hero.title', group: 'hero', label: 'Hero title', type: 'text', value: 'A bar built to be broken.' },
+  { key: 'hero.subtitle', group: 'hero', label: 'Hero subtitle', type: 'textarea', value: 'Discover our signature collection of handcrafted chocolates — featuring toasted kunafa, pistachio cream and single-origin chocolate. Small batches, packed fresh.' },
   { key: 'hero.image', group: 'hero', label: 'Hero background image', type: 'image', value: 'https://images.pexels.com/photos/6261691/pexels-photo-6261691.jpeg?auto=compress&cs=tinysrgb&w=1600' },
   { key: 'hero.rotateImage', group: 'hero', label: 'Hero rotating-circle image', type: 'image', value: '/assets/products/p3.jpg' },
   // shop
@@ -102,6 +102,13 @@ const content = [
   { key: 'cta.subtitle', group: 'cta', label: 'Newsletter subtitle', type: 'textarea', value: 'New flavours sell out fast. Get early access, restock alerts and the occasional pistachio secret.' },
   // footer
   { key: 'footer.tagline', group: 'footer', label: 'Footer tagline', type: 'textarea', value: 'A bar built to be broken. Pistachio, kunafa and single-origin chocolate, handcrafted in small batches.' },
+  // business / contact details (shown on Contact + all legal pages)
+  { key: 'business.legalName', group: 'business', label: 'Business / legal name', type: 'text', value: 'Bruwon' },
+  { key: 'business.email', group: 'business', label: 'Contact email', type: 'text', value: 'support@bruwon.com' },
+  { key: 'business.phone', group: 'business', label: 'Contact phone number', type: 'text', value: '+91 00000 00000' },
+  { key: 'business.address', group: 'business', label: 'Business address', type: 'textarea', value: 'India' },
+  { key: 'business.hours', group: 'business', label: 'Operating hours', type: 'text', value: 'Mon–Sat, 10:00 AM – 6:00 PM IST' },
+  { key: 'business.lastUpdated', group: 'business', label: 'Policies last-updated date', type: 'text', value: '4 July 2026' },
 ];
 
 async function run() {

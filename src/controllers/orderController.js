@@ -2,6 +2,8 @@ import asyncHandler from 'express-async-handler';
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 import { getRazorpay, verifyPaymentSignature, isRazorpayConfigured } from '../utils/razorpay.js';
+import { calcShipping } from '../utils/shipping.js';
+import { sendOrderEmails } from '../utils/mailer.js';
 
 const CURRENCY = () => process.env.CURRENCY || 'INR';
 
@@ -26,7 +28,6 @@ export const createOrder = asyncHandler(async (req, res) => {
 
   const orderItems = [];
   let subtotal = 0;
-  let shipping = 0; // per-order shipping = highest box shipping fee in the cart
   for (const line of items) {
     const p = map.get(String(line.productId));
     if (!p) {
@@ -35,10 +36,11 @@ export const createOrder = asyncHandler(async (req, res) => {
     }
     const qty = Math.max(1, parseInt(line.qty, 10) || 1);
     subtotal += p.price * qty;
-    shipping = Math.max(shipping, Number(p.shipping || 0));
     orderItems.push({ product: p._id, name: p.name, price: p.price, qty, image: p.image });
   }
 
+  // Order-value based shipping (only the reached tier applies, never summed).
+  const shipping = calcShipping(subtotal);
   const total = subtotal + shipping;
 
   const order = await Order.create({
@@ -110,6 +112,13 @@ export const verifyOrder = asyncHandler(async (req, res) => {
   order.payment.razorpayPaymentId = razorpay_payment_id;
   order.payment.razorpaySignature = razorpay_signature;
   await order.save();
+
+  // Send confirmation emails (owner + customer). Never let email break the flow.
+  try {
+    await sendOrderEmails(order);
+  } catch (e) {
+    console.error('✖ Order emails failed:', e.message);
+  }
 
   res.json({ success: true, order });
 });
