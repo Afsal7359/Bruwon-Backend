@@ -138,9 +138,11 @@ export const trackOrder = asyncHandler(async (req, res) => {
 // ---------- Admin ----------
 
 // GET /api/admin/orders
+// Only orders that reached payment are shown. Unpaid/abandoned 'created' orders
+// are hidden by default (they only exist to drive the Razorpay flow).
 export const listOrders = asyncHandler(async (req, res) => {
   const { status } = req.query;
-  const filter = status ? { status } : {};
+  const filter = status ? { status } : { status: { $ne: 'created' } };
   const orders = await Order.find(filter).sort({ createdAt: -1 });
   res.json(orders);
 });

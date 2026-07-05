@@ -32,20 +32,24 @@ export const stats = asyncHandler(async (req, res) => {
     Order.find().select('total status createdAt currency'),
   ]);
 
+  // Exclude unpaid/abandoned 'created' orders from the dashboard.
+  const confirmed = orders.filter((o) => o.status !== 'created');
   const paid = orders.filter((o) => ['paid', 'fulfilled'].includes(o.status));
   const revenue = paid.reduce((s, o) => s + o.total, 0);
 
-  const byStatus = orders.reduce((acc, o) => {
+  const byStatus = confirmed.reduce((acc, o) => {
     acc[o.status] = (acc[o.status] || 0) + 1;
     return acc;
   }, {});
 
-  const recent = await Order.find().sort({ createdAt: -1 }).limit(6);
+  const recent = await Order.find({ status: { $ne: 'created' } })
+    .sort({ createdAt: -1 })
+    .limit(6);
 
   res.json({
     productCount,
     subscriberCount,
-    orderCount: orders.length,
+    orderCount: confirmed.length,
     paidCount: paid.length,
     revenue,
     currency: process.env.CURRENCY || 'INR',
