@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema(
     items: { type: [orderItemSchema], default: [] },
     customer: {
       name: { type: String, required: true },
-      email: { type: String, required: true },
+      email: { type: String, default: '' },
       phone: { type: String, default: '' },
       address: {
         line1: { type: String, default: '' },

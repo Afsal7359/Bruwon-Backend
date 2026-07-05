@@ -16,9 +16,9 @@ export const createOrder = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Cart is empty');
   }
-  if (!customer.name || !customer.email) {
+  if (!customer.name) {
     res.status(400);
-    throw new Error('Customer name and email are required');
+    throw new Error('Customer name is required');
   }
 
   // Resolve products from DB — trust server prices, not the client.
